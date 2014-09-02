@@ -13,6 +13,9 @@ find_package(GLEW REQUIRED)
 include_directories(${GLFW_INCLUDE_DIRS})
 add_executable (VectorFieldRenderer
   main.cpp
+  application.cpp
+  renderer.cpp
+  modeviewcam.cpp
   )
 
 target_link_libraries (VectorFieldRenderer ${OPENGL_LIBRARY} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${ANT_TWEAK_BAR_LIBRARY})
