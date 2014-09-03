@@ -8,18 +8,25 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "boundingbox.h"
+#include "camera.h"
+
 class Renderer
 {
 private:
   int m_Width, m_Height;
-  glm::mat4 m_ViewMat, m_ProjMat;
+  glm::mat4 m_ProjMat;
   
   bool b_Initialized;
+  
+  Camera m_Camera;
+  BoundingBox bb;
   
 public:
   Renderer(const int& _pWidth, const int& _pHeight);
   
   void init();
+  void initCamera();
   
   void prepare(const float& _pDeltaTime);
   void render();
@@ -27,6 +34,8 @@ public:
   void deinit();
   
   void onResize(const int& _pWidth, const int& _pHeight);
+  void moveCam(const float& x, const float& y);
+  void moveCam(bool _pForward, bool _pBack, bool _pLeft, bool _pRight, bool _pUp, bool _pDown);
   
   bool isInitialized();
   

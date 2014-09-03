@@ -15,7 +15,12 @@ add_executable (VectorFieldRenderer
   main.cpp
   application.cpp
   renderer.cpp
-  modeviewcam.cpp
+  modelviewercam.cpp
+  shaderprogram.cpp
+  vis3dobject.cpp
+  boundingbox.cpp
+  camera.cpp
+  rply.c
   )
 
 target_link_libraries (VectorFieldRenderer ${OPENGL_LIBRARY} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${ANT_TWEAK_BAR_LIBRARY})
@@ -26,3 +31,4 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug)
 else()
 	set_target_properties(VectorFieldRenderer PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RELEASE_DIR})
 endif()
+ 
