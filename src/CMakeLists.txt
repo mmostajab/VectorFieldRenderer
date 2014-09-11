@@ -18,19 +18,23 @@ add_executable (VectorFieldRenderer
   modelviewercam.cpp
   shaderprogram.cpp
   vis3dobject.cpp
-  boundingbox.cpp
   camera.cpp
+  
   rply.c
   plydatareader.cpp
+  vis3dobject.cpp
+  boundingbox.cpp
   plyobject.cpp
   axis.cpp
   plane.cpp
   cone.cpp
   sphere.cpp
   box.cpp
-  
   scenemanager.cpp
   scenenode.cpp
+  
+  measurmentvolume.cpp
+  unitmanager.cpp
   )
 
 target_link_libraries (VectorFieldRenderer ${OPENGL_LIBRARY} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${ANT_TWEAK_BAR_LIBRARY})

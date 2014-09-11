@@ -8,10 +8,7 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "boundingbox.h"
-#include "plyobject.h"
 #include "camera.h"
-#include "plane.h"
 
 class Renderer
 {
