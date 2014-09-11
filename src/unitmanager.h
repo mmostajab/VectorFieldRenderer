@@ -15,47 +15,47 @@
 class Application;
 
 // Singleton Destructor
-class ToolManagerDestructor;
+class UnitManagerDestructor;
 
-class ToolManager
+class UnitManager
 {
   friend class Application;
-  friend class ToolManagerDestructor;
+  friend class UnitManagerDestructor;
 private:
   std::vector<VisUnit*> m_UnitPtrs;
   
-  static ToolManager* m_SingletonPtr;
-  static ToolManagerDestructor m_SingletonDestructor;
+  static UnitManager* m_SingletonPtr;
+  static UnitManagerDestructor m_SingletonDestructor;
   
 private:
-  ToolManager();
-  ~ToolManager();
+  UnitManager();
+  ~UnitManager();
   
 public:
   
-  static ToolManager* getSingletonPtr();
+  static UnitManager* getSingletonPtr();
   
   void createMeasurmentVolume(const std::string& _pBBName, const float& _pLength, const float& _pWidth, const float& _pHeight);
   
   Vis3DObject* getUnitPtrByName(const std::string& _pObjName);
 };
 
-class ToolManagerDestructor
+class UnitManagerDestructor
 {
 private:
-  ToolManager* m_SingletonPtr;
+  UnitManager* m_SingletonPtr;
 
 public:
-  ToolManagerDestructor()
+  UnitManagerDestructor()
   {
   }
 
-  void setSingletonPointer(ToolManager* _pSingletonPtr)
+  void setSingletonPointer(UnitManager* _pSingletonPtr)
   {
     m_SingletonPtr = _pSingletonPtr;
   }
 
-  ~ToolManagerDestructor()
+  ~UnitManagerDestructor()
   {
     delete m_SingletonPtr;
   }
