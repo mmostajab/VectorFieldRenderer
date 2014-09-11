@@ -1,108 +1,107 @@
-#include "PlyObject.h"
+#include "plyobject.h"
 
-#include "Vertex.h"
+#include <iostream>
 
-CPlyObject::CPlyObject(const long& _pUserDataLength, void* _pUserDataPtr):	m_UserDataLength(_pUserDataLength), m_UserDataPtr(_pUserDataPtr),
-																			m_VertexData(0), m_IndexData(0), m_VertexDataLength(0), m_IndexDataLength(0)
+PlyObject::PlyObject(const std::string& _pObjName, const std::string&  _pFilename, const long int& _pUserDataLength, void* _pUserDataPtr): 
+  Vis3DObject(_pObjName), m_UserDataLength(_pUserDataLength), m_UserDataPtr(_pUserDataPtr),
+  m_nVertices(0), m_nFaces(0), m_nIndices(0), m_BBox(_pObjName + "_BBOX")
 {
+  m_Filename = _pFilename;
+  m_ShaderPrg = new ShaderProgram("../src/glsl/plyobject.vert", "../src/glsl/plyobject.frag");
 }
 
-void CPlyObject::load(const char* _pFileName)
+void PlyObject::init()
 {
-	CPlyDataReader::getSingletonPtr()->readDataInfo(_pFileName, 0, 0);
-	
-	m_VertexDataLength = CPlyDataReader::getSingletonPtr()->getNumVertices();
-	m_VertexData = new VertexPN[m_VertexDataLength];
-	
-	m_nFaces = CPlyDataReader::getSingletonPtr()->getNumFaces();
-	m_IndexDataLength = 3 * m_nFaces;
-	m_IndexData = new unsigned int[m_IndexDataLength];
+  m_ShaderPrg->init();
+  m_ShaderPrg->bindAttribute(0, "a_Vertex");
+  m_ShaderPrg->bindAttribute(1, "a_Normal");
+  m_ShaderPrg->link();
+  
+  // load the data into the variables
+  PlyDataReader::getSingletonPtr()->readDataInfo(m_Filename.c_str(), m_UserDataPtr, m_UserDataLength);
+  
+  m_nVertices = PlyDataReader::getSingletonPtr()->getNumVertices();
+  m_VertexData.resize(m_nVertices);
+  
+  m_nFaces = PlyDataReader::getSingletonPtr()->getNumFaces();
+  m_nIndices = 3 * m_nFaces;
+  m_IndexData.resize(m_nIndices);
 
-	CPlyDataReader::getSingletonPtr()->readData(m_VertexData, m_IndexData);
-
-	CPlyDataReader::getSingletonPtr()->releaseDataHandles();
+  PlyDataReader::getSingletonPtr()->readData(&m_VertexData[0], &m_IndexData[0]);
+  
+  PlyDataReader::getSingletonPtr()->releaseDataHandles();
+  
+  // create the required buffers
+  glGenBuffers(1, &m_VertexBufferID);
+  glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferID);
+  glBufferData(GL_ARRAY_BUFFER, m_VertexData.size() * sizeof(PlyObjVertex), &m_VertexData[0], GL_STATIC_DRAW);
+  
+  glGenBuffers(1, &m_IndexBufferID);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferID);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_IndexData.size() * sizeof(unsigned int), &m_IndexData[0], GL_STATIC_DRAW);
+  
+  for(size_t i = 0; i < m_VertexData.size(); i++)
+  {
+    m_CenterPos += m_VertexData[i].pos;
+    m_BBox.addPoint(m_VertexData[i].pos);
+  }
+  
+  m_CenterPos /= m_VertexData.size();
+  
+  m_BBox.init();
 }
 
-void CPlyObject::create(ID3D11Device* _pD3DDevicePtr)
+void PlyObject::render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat)
 {
-	D3D11_BUFFER_DESC bd = {0};
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = m_VertexDataLength * sizeof(VertexPN);
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
-	D3D11_SUBRESOURCE_DATA InitData = {0};
-	InitData.pSysMem = m_VertexData;
-
-	_pD3DDevicePtr->CreateBuffer(&bd, &InitData, &m_VertexBuffer);
-
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = m_IndexDataLength * sizeof(unsigned int);
-	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-	InitData.pSysMem = m_IndexData;
-
-	_pD3DDevicePtr->CreateBuffer(&bd, &InitData, &m_IndexBuffer);
-
-	D3D11_INPUT_ELEMENT_DESC layout[] = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL"	, 0, DXGI_FORMAT_R32G32B32_FLOAT,	 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	UINT nElements = sizeof(layout) / sizeof(layout[0]);
-
-	m_Effect->createLayout(_pD3DDevicePtr, layout, nElements, &m_InputLayout);
+  glDisable(GL_CULL_FACE);
+  
+  glm::mat4 modelViewProjMat;
+  if(glm::length(m_ObjDims) < 0.0001f)
+    modelViewProjMat = _pProjMat * _pViewMat * glm::translate(glm::mat4(1.0f), -m_CenterPos);
+  else
+    // First, move to the center to (0,0,0)
+    // Second, put the object in a cube of 1
+    // Third, resize it to the dimensions that we want
+    // Forth, 
+    // Fifth, 
+    // Sixth, put it in the view coordinate
+    // Seventh, put it in projection space
+    modelViewProjMat = _pProjMat * _pViewMat * glm::translate(glm::mat4(1.0f), m_Position) * 
+    glm::rotate(glm::mat4(1.0f), m_Orientation.x, glm::vec3(1.0f, 0.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), m_Orientation.y, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), m_Orientation.z, glm::vec3(0.0f, 0.0f, 1.0f)) *
+    glm::scale(glm::mat4(1.0f), m_ObjDims) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f / m_BBox.getDims())) * glm::translate(glm::mat4(1.0f), -m_CenterPos) ;
+  
+  m_ShaderPrg->use();
+  m_ShaderPrg->sendUniformMatrix4fv("ModelViewProj_mat", modelViewProjMat);
+  
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  
+  int stride = sizeof(PlyObjVertex);
+  glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferID);
+  glVertexAttribPointer((GLint)0, 3, GL_FLOAT, GL_FALSE, stride, 0);
+  glVertexAttribPointer((GLint)1, 3, GL_FLOAT, GL_FALSE, stride, (char*)0 + 12);
+  
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferID);
+  
+  //std::cout << "Try to draw...\n";
+  glDrawElements(GL_TRIANGLES, m_IndexData.size(), GL_UNSIGNED_INT, 0);
+ // std::cout << "Drawing done...\n";
+  
+  glDisableVertexAttribArray(0);
+  glDisableVertexAttribArray(1);
+  
+  // Render the bounding box related to
+  m_BBox.render(modelViewProjMat);
+  
+  //std::cout << "Rendering done...\n";
 }
 
-void CPlyObject::render(ID3D11DeviceContext* _pD3DDeviceContextPtr)
+void PlyObject::deinit()
 {
-	UINT Stride = sizeof(VertexPN);
-	UINT Offset = 0;
-
-	_pD3DDeviceContextPtr->IASetVertexBuffers(0, 1, &m_VertexBuffer, &Stride, &Offset);
-	_pD3DDeviceContextPtr->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	_pD3DDeviceContextPtr->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	_pD3DDeviceContextPtr->IASetInputLayout(m_InputLayout);
-
-	m_Effect->apply(0, _pD3DDeviceContextPtr);
-	_pD3DDeviceContextPtr->DrawIndexed(m_nFaces * 3, 0, 0);
-	//_pD3DDeviceContextPtr->Draw(3, 0);
+  
 }
 
-void CPlyObject::release()
-{
-	C3DMesh::release();
-	/*
-	if(m_IndexData)
-		delete[] m_IndexData;
-	m_IndexData = 0;
-	m_IndexDataLength = 0;
-	*/
-	if(m_IndexBuffer)
-		m_IndexBuffer->Release();
-	m_IndexBuffer = 0;
-	/*
-	if(m_UserDataPtr)
-		delete[] m_UserDataPtr;
-	m_UserDataPtr = 0;
-	m_UserDataLength = 0;
-	
-	if(m_VertexData)
-		delete[] m_VertexData;
-	m_UserDataPtr = 0;
-	*/
-	if(m_IndexBuffer)
-		m_IndexBuffer->Release();
-	m_IndexBuffer = 0;
-
-	if(m_InputLayout)
-		m_InputLayout->Release();
-	m_InputLayout = 0;
-
-	if(m_VertexBuffer)
-		m_VertexBuffer->Release();
-	m_VertexBuffer = 0;
-}
-
-CPlyObject::~CPlyObject(void)
+PlyObject::~PlyObject(void)
 {
 	
 }

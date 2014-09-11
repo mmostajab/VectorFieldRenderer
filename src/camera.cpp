@@ -5,10 +5,10 @@ using namespace std;
 Camera::Camera() {
 	camera_mode = FREE;
 	camera_up = glm::vec3(0, 1, 0);
-	field_of_view = 45;
+	field_of_view = 45 * glm::pi<double>() / 180.0;
 	rotation_quaternion = glm::quat(1, 0, 0, 0);
 	camera_position_delta = glm::vec3(0, 0, 0);
-	camera_scale = .5f;
+	camera_scale = .1f;
 	max_pitch_rate = 5;
 	max_heading_rate = 5;
 	move_camera = false;
@@ -28,31 +28,33 @@ void Camera::Update() {
 	glViewport(viewport_x, viewport_y, window_width, window_height);
 
 	if (camera_mode == ORTHO) {
-		//our projection matrix will be an orthogonal one in this case
-		//if the values are not floating point, this command does not work properly
-		//need to multiply by aspect!!! (otherise will not scale properly)
-		projection = glm::ortho(-1.5f * float(aspect), 1.5f * float(aspect), -1.5f, 1.5f, -10.0f, 10.f);
+	  //our projection matrix will be an orthogonal one in this case
+	  //if the values are not floating point, this command does not work properly
+	  //need to multiply by aspect!!! (otherise will not scale properly)
+	  projection = glm::ortho(-1.5f * float(aspect), 1.5f * float(aspect), -1.5f, 1.5f, -10.0f, 10.f);
 	} else if (camera_mode == FREE) {
-		projection = glm::perspective(field_of_view, aspect, near_clip, far_clip);
-		//detmine axis for pitch rotation
-		glm::vec3 axis = glm::cross(camera_direction, camera_up);
-		//compute quaternion for pitch based on the camera pitch angle
-		glm::quat pitch_quat = glm::angleAxis(camera_pitch, axis);
-		//determine heading quaternion from the camera up vector and the heading angle
-		glm::quat heading_quat = glm::angleAxis(camera_heading, camera_up);
-		//add the two quaternions
-		glm::quat temp = glm::cross(pitch_quat, heading_quat);
-		temp = glm::normalize(temp);
-		//update the direction from the quaternion
-		camera_direction = glm::rotate(temp, camera_direction);
-		//add the camera delta
-		camera_position += camera_position_delta;
-		//set the look at to be infront of the camera
-		camera_look_at = camera_position + camera_direction * 1.0f;
-		//damping for smooth camera
-		camera_heading *= .5;
-		camera_pitch *= .5;
-		camera_position_delta = camera_position_delta * .8f;
+	  projection = glm::perspective(field_of_view, aspect, near_clip, far_clip);
+	  //detmine axis for pitch rotation
+	  glm::vec3 axis = glm::cross(camera_direction, camera_up);
+	  //compute quaternion for pitch based on the camera pitch angle
+	  glm::quat pitch_quat = glm::angleAxis(camera_pitch * glm::pi<float>() / 180.0f, axis);
+	  //determine heading quaternion from the camera up vector and the heading angle
+	  glm::quat heading_quat = glm::angleAxis(camera_heading * glm::pi<float>() / 180.0f, camera_up);
+	  //add the two quaternions
+	  glm::quat temp = glm::cross(pitch_quat, heading_quat);
+	  temp = glm::normalize(temp);
+	  //update the direction from the quaternion
+	  camera_direction = glm::rotate(temp, camera_direction);
+	  //add the camera delta
+	  camera_position += camera_position_delta;
+	  //set the look at to be infront of the camera
+	  camera_look_at = camera_position + camera_direction * 1.0f;
+	  //damping for smooth camera
+	  camera_heading *= .5;
+	  camera_pitch *= .5;
+	  camera_position_delta = camera_position_delta * .8f;
+	} else if(camera_mode == MODELVIEWER) {
+	  	
 	}
 	//compute the MVP
 	view = glm::lookAt(camera_position, camera_look_at, camera_up);
@@ -76,7 +78,7 @@ void Camera::SetLookAt(glm::vec3 pos) {
 	camera_look_at = pos;
 }
 void Camera::SetFOV(double fov) {
-	field_of_view = fov;
+	field_of_view = fov * glm::pi<double>() / 180.0;
 }
 void Camera::SetViewport(int loc_x, int loc_y, int width, int height) {
 	viewport_x = loc_x;
@@ -141,7 +143,7 @@ void Camera::ChangeHeading(float degrees) {
 	}
 	//This controls how the heading is changed if the camera is pointed straight up or down
 	//The heading delta direction changes
-	if (camera_pitch > 90 && camera_pitch < 270 || (camera_pitch < -90 && camera_pitch > -270)) {
+	if ((camera_pitch > 90 && camera_pitch < 270) || (camera_pitch < -90 && camera_pitch > -270)) {
 		camera_heading -= degrees;
 	} else {
 		camera_heading += degrees;

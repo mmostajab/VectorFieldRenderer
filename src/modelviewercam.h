@@ -1,6 +1,7 @@
 #ifndef __VIS_TOOL_MODELVIEWCAMERA_H__
 #define __VIS_TOOL_MODELVIEWCAMERA_H__
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>

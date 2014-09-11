@@ -21,6 +21,16 @@ add_executable (VectorFieldRenderer
   boundingbox.cpp
   camera.cpp
   rply.c
+  plydatareader.cpp
+  plyobject.cpp
+  axis.cpp
+  plane.cpp
+  cone.cpp
+  sphere.cpp
+  box.cpp
+  
+  scenemanager.cpp
+  scenenode.cpp
   )
 
 target_link_libraries (VectorFieldRenderer ${OPENGL_LIBRARY} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${ANT_TWEAK_BAR_LIBRARY})

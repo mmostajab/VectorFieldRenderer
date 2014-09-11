@@ -9,7 +9,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "boundingbox.h"
+#include "plyobject.h"
 #include "camera.h"
+#include "plane.h"
 
 class Renderer
 {
@@ -20,7 +22,6 @@ private:
   bool b_Initialized;
   
   Camera m_Camera;
-  BoundingBox bb;
   
 public:
   Renderer(const int& _pWidth, const int& _pHeight);
