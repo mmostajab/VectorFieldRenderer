@@ -18,6 +18,8 @@ protected:
   glm::vec3 m_Orientation;
   glm::vec3 m_ObjDims;
   
+  bool b_Initialized;
+  
 public:
   Vis3DObject(const std::string& _pUnitName, const std::string& _pObjName);
   

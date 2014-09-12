@@ -1,6 +1,6 @@
 #include "vis3dobject.h"
 
-Vis3DObject::Vis3DObject(const std::string& _pUnitName, const std::string& _pObjName): m_UnitName(_pUnitName), m_Name(_pObjName)
+Vis3DObject::Vis3DObject(const std::string& _pUnitName, const std::string& _pObjName): m_UnitName(_pUnitName), m_Name(_pObjName), b_Initialized(false)
 {
 }
   

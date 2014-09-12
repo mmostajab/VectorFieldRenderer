@@ -50,7 +50,10 @@ public:
 	void deinit();
 
 	bool isInitialized();
-
+	
+	std::string getVSFilename() const;
+	std::string getFSFilename() const;
+	
 	~ShaderProgram();
 
 private:

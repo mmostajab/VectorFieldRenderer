@@ -1,5 +1,7 @@
 #include "plane.h"
 
+#include <iostream>
+
 Plane::Plane(const std::string& _pUnitName, const std::string& _pObjName, const glm::vec3& _pPoint, const glm::vec3& _pXDir, const glm::vec3& _pYDir, const float& _pLen, const float& _pWidth): 
   Vis3DObject(_pUnitName, _pObjName), m_Point(_pPoint), m_XDir(_pXDir), m_YDir(_pYDir), m_Len(_pLen), m_Width(_pWidth)
 {
@@ -8,21 +10,26 @@ Plane::Plane(const std::string& _pUnitName, const std::string& _pObjName, const 
   
 void Plane::init()
 {
-  m_ShaderPrg->init();
-  m_ShaderPrg->bindAttribute(0, "a_Vertex");
-  m_ShaderPrg->link();
-  
-  glm::normalize(m_XDir);
-  glm::normalize(m_YDir);
-  
-  m_Points.push_back( m_Len / 2.0f * m_XDir - m_Width / 2.0f * m_YDir);
-  m_Points.push_back( m_Len / 2.0f * m_XDir + m_Width / 2.0f * m_YDir);
-  m_Points.push_back(-m_Len / 2.0f * m_XDir - m_Width / 2.0f * m_YDir);
-  m_Points.push_back(-m_Len / 2.0f * m_XDir + m_Width / 2.0f * m_YDir);
-  
-  glGenBuffers(1, &m_BufferID);
-  glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);
-  glBufferData(GL_ARRAY_BUFFER, m_Points.size() * sizeof(glm::vec3), &m_Points[0], GL_STATIC_DRAW);
+  if(!b_Initialized)
+  {
+    m_ShaderPrg->init();
+    m_ShaderPrg->bindAttribute(0, "a_Vertex");
+    m_ShaderPrg->link();
+    
+    glm::normalize(m_XDir);
+    glm::normalize(m_YDir);
+    
+    m_Points.push_back( m_Len / 2.0f * m_XDir - m_Width / 2.0f * m_YDir);
+    m_Points.push_back( m_Len / 2.0f * m_XDir + m_Width / 2.0f * m_YDir);
+    m_Points.push_back(-m_Len / 2.0f * m_XDir - m_Width / 2.0f * m_YDir);
+    m_Points.push_back(-m_Len / 2.0f * m_XDir + m_Width / 2.0f * m_YDir);
+    
+    glGenBuffers(1, &m_BufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);
+    glBufferData(GL_ARRAY_BUFFER, m_Points.size() * sizeof(glm::vec3), &m_Points[0], GL_STATIC_DRAW);
+    
+    b_Initialized = true;
+  }
 }
 
 void Plane::render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat)

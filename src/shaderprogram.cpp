@@ -12,31 +12,34 @@ ShaderProgram::ShaderProgram(const char* _pVSFileName, const char* _pFSFileName)
 
 void ShaderProgram::init()
 {
-	m_VS.id = glCreateShader(GL_VERTEX_SHADER);
-	m_FS.id = glCreateShader(GL_FRAGMENT_SHADER);
-	m_ProgramID = glCreateProgram();
+  //if(!b_Initialized)
+  //{
+    m_VS.id = glCreateShader(GL_VERTEX_SHADER);
+    m_FS.id = glCreateShader(GL_FRAGMENT_SHADER);
+    m_ProgramID = glCreateProgram();
 
-	m_VS.source = readFile(m_VS.fileName);
-	m_FS.source = readFile(m_FS.fileName);
+    m_VS.source = readFile(m_VS.fileName);
+    m_FS.source = readFile(m_FS.fileName);
 
-	const GLchar* vsProgramTextPtr = static_cast<const GLchar*>(m_VS.source.c_str());
-	const GLchar* fsProgramTextPtr = static_cast<const GLchar*>(m_FS.source.c_str());
- 
-	glShaderSource(m_VS.id, 1, &vsProgramTextPtr, NULL);
-	glShaderSource(m_FS.id, 1, &fsProgramTextPtr, NULL);
+    const GLchar* vsProgramTextPtr = static_cast<const GLchar*>(m_VS.source.c_str());
+    const GLchar* fsProgramTextPtr = static_cast<const GLchar*>(m_FS.source.c_str());
 
-	if(!compileShader(m_VS) || !compileShader(m_FS))
-	{
-		std::cerr << "Could not compile the shaders. There is something wrong!!!";
-		b_Initialized = false;
-		return;
-	}
+    glShaderSource(m_VS.id, 1, &vsProgramTextPtr, NULL);
+    glShaderSource(m_FS.id, 1, &fsProgramTextPtr, NULL);
 
-	glAttachShader(m_ProgramID, m_VS.id);
-	glAttachShader(m_ProgramID, m_FS.id);
+    if(!compileShader(m_VS) || !compileShader(m_FS))
+    {
+	    std::cerr << "Could not compile the shaders. There is something wrong!!!";
+	    b_Initialized = false;
+	    return;
+    }
 
-	glLinkProgram(m_ProgramID);
-	b_Initialized = true;
+    glAttachShader(m_ProgramID, m_VS.id);
+    glAttachShader(m_ProgramID, m_FS.id);
+
+    glLinkProgram(m_ProgramID);
+    b_Initialized = true;
+  //}
 }
 
 void ShaderProgram::init(const std::string& _pShaderHeader)
@@ -114,6 +117,16 @@ void ShaderProgram::deinit()
     glDeleteShader(m_VS.id);
     glDeleteShader(m_FS.id);
     glDeleteShader(m_ProgramID);
+}
+
+std::string ShaderProgram::getVSFilename() const
+{
+  return m_VS.fileName;
+}
+
+std::string ShaderProgram::getFSFilename() const
+{
+  return m_FS.fileName;	
 }
 
 bool ShaderProgram::isInitialized()

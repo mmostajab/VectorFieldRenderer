@@ -13,43 +13,48 @@ PlyObject::PlyObject(const std::string& _pUnitName, const std::string& _pObjName
 
 void PlyObject::init()
 {
-  m_ShaderPrg->init();
-  m_ShaderPrg->bindAttribute(0, "a_Vertex");
-  m_ShaderPrg->bindAttribute(1, "a_Normal");
-  m_ShaderPrg->link();
-  
-  // load the data into the variables
-  PlyDataReader::getSingletonPtr()->readDataInfo(m_Filename.c_str(), m_UserDataPtr, m_UserDataLength);
-  
-  m_nVertices = PlyDataReader::getSingletonPtr()->getNumVertices();
-  m_VertexData.resize(m_nVertices);
-  
-  m_nFaces = PlyDataReader::getSingletonPtr()->getNumFaces();
-  m_nIndices = 3 * m_nFaces;
-  m_IndexData.resize(m_nIndices);
-
-  PlyDataReader::getSingletonPtr()->readData(&m_VertexData[0], &m_IndexData[0]);
-  
-  PlyDataReader::getSingletonPtr()->releaseDataHandles();
-  
-  // create the required buffers
-  glGenBuffers(1, &m_VertexBufferID);
-  glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferID);
-  glBufferData(GL_ARRAY_BUFFER, m_VertexData.size() * sizeof(PlyObjVertex), &m_VertexData[0], GL_STATIC_DRAW);
-  
-  glGenBuffers(1, &m_IndexBufferID);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferID);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_IndexData.size() * sizeof(unsigned int), &m_IndexData[0], GL_STATIC_DRAW);
-  
-  for(size_t i = 0; i < m_VertexData.size(); i++)
+  if(!b_Initialized)
   {
-    m_CenterPos += m_VertexData[i].pos;
-    m_BBox.addPoint(m_VertexData[i].pos);
+    m_ShaderPrg->init();
+    m_ShaderPrg->bindAttribute(0, "a_Vertex");
+    m_ShaderPrg->bindAttribute(1, "a_Normal");
+    m_ShaderPrg->link();
+    
+    // load the data into the variables
+    PlyDataReader::getSingletonPtr()->readDataInfo(m_Filename.c_str(), m_UserDataPtr, m_UserDataLength);
+    
+    m_nVertices = PlyDataReader::getSingletonPtr()->getNumVertices();
+    m_VertexData.resize(m_nVertices);
+    
+    m_nFaces = PlyDataReader::getSingletonPtr()->getNumFaces();
+    m_nIndices = 3 * m_nFaces;
+    m_IndexData.resize(m_nIndices);
+
+    PlyDataReader::getSingletonPtr()->readData(&m_VertexData[0], &m_IndexData[0]);
+    
+    PlyDataReader::getSingletonPtr()->releaseDataHandles();
+    
+    // create the required buffers
+    glGenBuffers(1, &m_VertexBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferID);
+    glBufferData(GL_ARRAY_BUFFER, m_VertexData.size() * sizeof(PlyObjVertex), &m_VertexData[0], GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &m_IndexBufferID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBufferID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_IndexData.size() * sizeof(unsigned int), &m_IndexData[0], GL_STATIC_DRAW);
+    
+    for(size_t i = 0; i < m_VertexData.size(); i++)
+    {
+      m_CenterPos += m_VertexData[i].pos;
+      m_BBox.addPoint(m_VertexData[i].pos);
+    }
+    
+    m_CenterPos /= m_VertexData.size();
+    
+    m_BBox.init();
+    
+    b_Initialized = true;
   }
-  
-  m_CenterPos /= m_VertexData.size();
-  
-  m_BBox.init();
 }
 
 void PlyObject::render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat)

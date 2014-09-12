@@ -6,7 +6,7 @@
 
 Renderer::Renderer(const int& _pWidth, const int& _pHeight): m_Width(_pWidth), m_Height(_pHeight), m_ProjMat(1.0f), m_Camera()
       //plyobj("../data/happybudhaa/happy.ply")
-      //  plyobj("../data/antenne.ply")
+      //plyobj("../data/antenne.ply")
       //plyobj("gate", "../data/gate.ply"),
       
       /*m_Camera(glm::vec3(-15, 0, 0), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0))*/
@@ -51,7 +51,7 @@ void Renderer::init()
 void Renderer::initCamera()
 {
   m_Camera.SetMode(FREE);
-  m_Camera.SetPosition(glm::vec3(2, 2, 4));
+  m_Camera.SetPosition(glm::vec3(0, 1, -3));
   m_Camera.SetLookAt(glm::vec3(0, 0, 0));
   m_Camera.SetClipping(0.01f, 10000.0f);
   m_Camera.SetFOV(60);
