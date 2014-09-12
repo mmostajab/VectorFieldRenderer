@@ -1,6 +1,7 @@
 #include "boundingbox.h"
 
 #include <iostream>
+#include "unitmanager.h"
 
 BoundingBox::BoundingBox(const std::string& _pUnitName, const std::string& _pBBName, const glm::vec3& _pCorner1, const glm::vec3& _pCorner2): Vis3DObject(_pUnitName, _pBBName), m_Segs(1, 1, 1)
 {
@@ -129,7 +130,11 @@ void BoundingBox::init()
 
 void BoundingBox::render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat)
 {
-  glm::mat4 modelMat = glm::translate(glm::mat4(1.0f), m_Position) * glm::scale(glm::mat4(1.0f), m_MaxCorner - m_MinCorner);
+  glm::mat4 modelMat = 
+    UnitManager::getSingletonPtr()->getUnitPtrByName(m_UnitName)->getParentModelMat() *
+    glm::translate(glm::mat4(1.0f), m_Position) * 
+    UnitManager::getSingletonPtr()->getUnitPtrByName(m_UnitName)->getSetupModelMat() * 
+    glm::scale(glm::mat4(1.0f), m_MaxCorner - m_MinCorner);
   
   glm::mat4 modelViewProjMat = _pProjMat * _pViewMat * modelMat;
   
@@ -165,7 +170,11 @@ void BoundingBox::render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat)
 
 void BoundingBox::render(const glm::mat4& _pModelViewProjMat)
 {
-  glm::mat4 modelMat = glm::translate(glm::mat4(1.0f), m_Position) * glm::scale(glm::mat4(1.0f), m_MaxCorner - m_MinCorner);
+  glm::mat4 modelMat = 
+    UnitManager::getSingletonPtr()->getUnitPtrByName(m_UnitName)->getParentModelMat() *
+    glm::translate(glm::mat4(1.0f), m_Position) * 
+    UnitManager::getSingletonPtr()->getUnitPtrByName(m_UnitName)->getSetupModelMat() * 
+    glm::scale(glm::mat4(1.0f), m_MaxCorner - m_MinCorner);
   
   glm::mat4 modelViewProjMat = _pModelViewProjMat * modelMat;
   

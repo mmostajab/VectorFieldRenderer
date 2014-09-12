@@ -1,10 +1,11 @@
 #include "plyobject.h"
 
 #include <iostream>
+#include "unitmanager.h"
 
 PlyObject::PlyObject(const std::string& _pUnitName, const std::string& _pObjName, const std::string&  _pFilename, const long int& _pUserDataLength, void* _pUserDataPtr): 
   Vis3DObject(_pUnitName, _pObjName), m_UserDataLength(_pUserDataLength), m_UserDataPtr(_pUserDataPtr),
-  m_nVertices(0), m_nFaces(0), m_nIndices(0), m_BBox(_pUnitName, _pObjName + "_BBOX")
+  m_nVertices(0), m_nFaces(0), m_nIndices(0), m_BBox("NOTHING", _pObjName + "_BBOX")
 {
   m_Filename = _pFilename;
   m_ShaderPrg = new ShaderProgram("../src/glsl/plyobject.vert", "../src/glsl/plyobject.frag");
@@ -66,8 +67,11 @@ void PlyObject::render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat)
     // Fifth, 
     // Sixth, put it in the view coordinate
     // Seventh, put it in projection space
-    modelViewProjMat = _pProjMat * _pViewMat * glm::translate(glm::mat4(1.0f), m_Position) * 
+    modelViewProjMat = _pProjMat * _pViewMat * 
+    UnitManager::getSingletonPtr()->getUnitPtrByName(m_UnitName)->getParentModelMat() *
+    glm::translate(glm::mat4(1.0f), m_Position) * 
     glm::rotate(glm::mat4(1.0f), m_Orientation.x, glm::vec3(1.0f, 0.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), m_Orientation.y, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), m_Orientation.z, glm::vec3(0.0f, 0.0f, 1.0f)) *
+    UnitManager::getSingletonPtr()->getUnitPtrByName(m_UnitName)->getSetupModelMat() *
     glm::scale(glm::mat4(1.0f), m_ObjDims) * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f / m_BBox.getDims())) * glm::translate(glm::mat4(1.0f), -m_CenterPos) ;
   
   m_ShaderPrg->use();

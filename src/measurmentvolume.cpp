@@ -24,6 +24,7 @@ void MeasurmentVolume::deinit()
 void MeasurmentVolume::setPosition(const float& _pX, const float& _pY, const float& _pZ)
 {
 //  SceneManager::getSingletonPtr()->getObjectPtrByName(m_Name + "_BBOX")->setPosition()
+  m_ParentModelMat = glm::translate(glm::mat4(1.0f), glm::vec3(_pX, _pY, _pZ));
 }
 
 void MeasurmentVolume::setOrientation(const float& _pX, const float& _pY, const float& _pZ)

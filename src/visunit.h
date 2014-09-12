@@ -23,13 +23,17 @@ protected:
 public:
   VisUnit(const std::string& _pObjName);
   
-  virtual void init() = 0;
-  virtual void deinit() = 0;
+  virtual void init() ;
+  virtual void deinit();
   
-  virtual void setPosition(const float& _pX, const float& _pY, const float& _pZ) = 0;
-  virtual void setOrientation(const float& _pX, const float& _pY, const float& _pZ) = 0;
+  virtual void setPosition(const float& _pX, const float& _pY, const float& _pZ) ;
+  virtual void setOrientation(const float& _pX, const float& _pY, const float& _pZ) ;
+  
+  void setSetupModelMat(const glm::mat4& _pSetupModelMat);
   
   std::string getName() const;
+  glm::mat4 getSetupModelMat();
+  glm::mat4 getParentModelMat();
   
   virtual ~VisUnit(); 
 };

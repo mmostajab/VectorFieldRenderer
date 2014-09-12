@@ -11,9 +11,12 @@ VisApplication::VisApplication(const int& _pWidth, const int& _pHeight): m_Rende
 {
   UnitManager::getSingletonPtr()->createGround("Ground", glm::vec3(0, 0, 0), 100, 100);
   UnitManager::getSingletonPtr()->createMeasurmentVolume("MeasurmentVol", 3, 3, 3, 2, 2, 1);
+  UnitManager::getSingletonPtr()->getUnitPtrByName("MeasurmentVol")->setPosition(1, 1, 0);
   UnitManager::getSingletonPtr()->createDipole("Dipole", 0.05, 0.6, 0.4);
   UnitManager::getSingletonPtr()->createAntenna("Antenna", 0.2, 0.4, 0.4);
   UnitManager::getSingletonPtr()->createGate("Gate", 3, 0.2, 2, 0.0f, 1.5f, 0.0f);
+  glm::mat4 gateSetupMat = glm::translate(glm::mat4(1.0f), glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(1, 0, 0));
+  UnitManager::getSingletonPtr()->getUnitPtrByName("Gate")->setSetupModelMat(gateSetupMat);
 }
   
 void VisApplication::init()

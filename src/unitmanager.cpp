@@ -11,6 +11,8 @@ UnitManagerDestructor UnitManager::m_SingletonDestructor;
 
 UnitManager::UnitManager()
 {
+  VisUnit* nothingUnit = new VisUnit("NOTHING");
+  m_UnitPtrs.push_back(nothingUnit);
 }
   
 UnitManager* UnitManager::getSingletonPtr()
@@ -33,7 +35,6 @@ void UnitManager::createGround(const std::string& _pGroundName, const glm::vec3&
 void UnitManager::createGate(const std::string& _pGateName, const float& _pLen, const float& _pWidth, const float& _pHeight, const float& _pX, const float& _pY, const float& _pZ)
 {
   StaticUnit* gatePtr = new StaticUnit(_pGateName, "../data/gateN.ply", _pLen, _pWidth, _pHeight);
-  //gatePtr->setPosition(_pX, _pY, _pZ);
   m_UnitPtrs.push_back(gatePtr);
 }
 
