@@ -22,7 +22,7 @@ private:
   ShaderProgram* m_ShaderPrg;
   
 public:
-  Plane(const std::string& _pObjName, const glm::vec3& _pPoint, const glm::vec3& _pXDir, const glm::vec3& _pYDir, const float& _pLen, const float& _pWidth);
+  Plane(const std::string& _pUnitName, const std::string& _pObjName, const glm::vec3& _pPoint, const glm::vec3& _pXDir, const glm::vec3& _pYDir, const float& _pLen, const float& _pWidth);
   
   void init();
   void render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat);

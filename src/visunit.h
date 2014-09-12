@@ -17,11 +17,13 @@ protected:
   glm::vec3 m_Orientation;
   glm::vec3 m_Dims;
   
+  glm::mat4 m_SetupModelMat;			// The matrix which will set the model in right direction and position
+  glm::mat4 m_ParentModelMat;			// The matrix which will update the object based on the parent unit model
+  
 public:
   VisUnit(const std::string& _pObjName);
   
   virtual void init() = 0;
-  virtual void render() = 0;
   virtual void deinit() = 0;
   
   virtual void setPosition(const float& _pX, const float& _pY, const float& _pZ) = 0;

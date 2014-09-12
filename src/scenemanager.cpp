@@ -1,5 +1,6 @@
 #include "scenemanager.h"
 
+#include "boundingbox.h"
 #include "box.h"
 #include "plane.h"
 #include "plyobject.h"
@@ -23,28 +24,48 @@ SceneManager* SceneManager::getSingletonPtr()
   return m_SingletonPtr;
 }
 
-void SceneManager::createBox(const std::string& _pBoxName, const float& _pLength, const float& _pWidth, const float& _pHeight)
+void SceneManager::createBoundingBox(const std::string& _pUnitName, const std::string& _pBBName, const glm::vec3& _pDims, const glm::vec3& _pSegs, const bool& _pDetailed)
+{
+  createBoundingBox(_pUnitName, _pBBName, _pDims.x, _pDims.y, _pDims.z, _pSegs.x, _pSegs.y, _pSegs.z, _pDetailed);
+}
+
+void SceneManager::createBoundingBox(const std::string& _pUnitName, const std::string& _pBBName, const float& _pLength, const float& _pWidth, const float& _pHeight, const int& _pLSegs, const int& _pWSegs, const int& _pHSegs, const bool& _pDetailed)
+{
+  SceneNode* scenenode = new SceneNode(_pBBName + "_Node");
+  BoundingBox* boundingboxobj = new BoundingBox(_pUnitName, _pBBName, _pLength, _pWidth, _pHeight, _pLSegs, _pWSegs, _pHSegs);
+  
+  if(_pDetailed)
+    boundingboxobj->setDetailedMode();
+  else
+    boundingboxobj->setOutlineMode();
+  
+  scenenode->addObject(boundingboxobj);
+  
+  m_Nodes.push_back(scenenode);  
+}
+
+void SceneManager::createBox(const std::string& _pUnitName, const std::string& _pBoxName, const float& _pLength, const float& _pWidth, const float& _pHeight)
 {
   SceneNode* scenenode = new SceneNode(_pBoxName + "_Node");
-  Box* boxobj = new Box(_pBoxName, _pLength, _pWidth, _pHeight);
+  Box* boxobj = new Box(_pUnitName, _pBoxName, _pLength, _pWidth, _pHeight);
   scenenode->addObject(boxobj);
   
   m_Nodes.push_back(scenenode);  
 }
 
-void SceneManager::createPlane(const std::string& _pPlaneName, const glm::vec3& _pPoint, const glm::vec3& _pXDir, const glm::vec3& _pYDir, const float& _pLen, const float& _pWidth)
+void SceneManager::createPlane(const std::string& _pUnitName, const std::string& _pPlaneName, const glm::vec3& _pPoint, const glm::vec3& _pXDir, const glm::vec3& _pYDir, const float& _pLen, const float& _pWidth)
 {
   SceneNode* scenenode = new SceneNode(_pPlaneName + "_Node");
-  Plane* planeobj = new Plane(_pPlaneName, _pPoint, _pXDir, _pYDir, _pLen, _pWidth);
+  Plane* planeobj = new Plane(_pUnitName, _pPlaneName, _pPoint, _pXDir, _pYDir, _pLen, _pWidth);
   scenenode->addObject(planeobj);
   
   m_Nodes.push_back(scenenode);  
 }
 
-void SceneManager::createPlyObject(const std::string& _pPlyObjName, const std::string& _pPlyFilename)
+void SceneManager::createPlyObject(const std::string& _pUnitName, const std::string& _pPlyObjName, const std::string& _pPlyFilename)
 {
   SceneNode* scenenode = new SceneNode(_pPlyObjName + "_Node");
-  PlyObject* plyobj = new PlyObject(_pPlyObjName, _pPlyFilename);
+  PlyObject* plyobj = new PlyObject(_pUnitName, _pPlyObjName, _pPlyFilename);
   scenenode->addObject(plyobj);
   
   m_Nodes.push_back(scenenode);

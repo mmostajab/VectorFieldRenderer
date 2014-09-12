@@ -2,34 +2,26 @@
 
 #include <iostream>
 
-#include "scenemanager.h"
+#include "unitmanager.h"
+//#include "scenemanager.h"
 
 VisApplication::VisApplication(const int& _pWidth, const int& _pHeight): m_Renderer(_pWidth, _pHeight), 
   b_MoveForward(false), b_MoveBackward(false), b_MoveLeft(false), b_MoveRight(false), b_MoveUp(false), b_MoveDown(false),
   b_LButtonDown(false), b_RButtonDown(false), b_MButtonDown(false)
 {
+  UnitManager::getSingletonPtr()->createGround("Ground", glm::vec3(0, 0, 0), 100, 100);
+  UnitManager::getSingletonPtr()->createMeasurmentVolume("MeasurmentVol", 3, 3, 3, 2, 2, 1);
+  UnitManager::getSingletonPtr()->createDipole("Dipole", 0.05, 0.6, 0.4);
+  UnitManager::getSingletonPtr()->createAntenna("Antenna", 0.2, 0.4, 0.4);
+  UnitManager::getSingletonPtr()->createGate("Gate", 3, 0.2, 2, 0.0f, 1.5f, 0.0f);
 }
   
 void VisApplication::init()
 {
-  SceneManager::getSingletonPtr()->createPlyObject("dipole", "../data/dipole.ply");
-  SceneManager::getSingletonPtr()->createPlyObject("gate", "../data/gateN.ply");
-  SceneManager::getSingletonPtr()->createPlane("plane", glm::vec3(0, 0, 0), glm::vec3(0, 0, 1), glm::vec3(1, 0, 0), 10, 10);
-  SceneManager::getSingletonPtr()->createBox("box", 0.5f, 0.5f, 0.5f);
-  
-  SceneManager::getSingletonPtr()->getObjectPtrByName("gate")->setPosition(0, 1.5f, 0);
-  SceneManager::getSingletonPtr()->getObjectPtrByName("gate")->setOrientation(-glm::pi<float>() / 2.0f, 0.0f, 0.0f);
-  SceneManager::getSingletonPtr()->getObjectPtrByName("gate")->setObjectDims(3, 0.2, 2);	// gate
-  
-  SceneManager::getSingletonPtr()->getObjectPtrByName("dipole")->setPosition(0, 1.5f, 0);
-  SceneManager::getSingletonPtr()->getObjectPtrByName("dipole")->setOrientation(-glm::pi<float>(), -glm::pi<float>() / 2.0f, 0.0f);
-  SceneManager::getSingletonPtr()->getObjectPtrByName("dipole")->setObjectDims(0.05,0.6, 0.4);	// dipole
-  
-  SceneManager::getSingletonPtr()->getObjectPtrByName("box")->setPosition(1.5, 1.5f, 0);
-  
-  // plyobj.setPosition(0, 1.5f, 0);
- // plyobj.setOrientation(-glm::pi<float>() / 2.0f, 0.0f, 0.0f);
-  //plyobj.setObjectDims(glm::vec3(3, 0.2, 2));	// gate
+  for(size_t i = 0; i < UnitManager::getSingletonPtr()->m_UnitPtrs.size(); i++)
+  {
+    UnitManager::getSingletonPtr()->m_UnitPtrs[i]->init();
+  }
   
   m_Renderer.init();
   

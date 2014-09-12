@@ -11,6 +11,7 @@
 class Vis3DObject
 {
 protected:
+  std::string m_UnitName;
   std::string m_Name;
   
   glm::vec3 m_Position;
@@ -18,7 +19,7 @@ protected:
   glm::vec3 m_ObjDims;
   
 public:
-  Vis3DObject(const std::string& _pObjName);
+  Vis3DObject(const std::string& _pUnitName, const std::string& _pObjName);
   
   virtual void init() = 0;
   virtual void render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat) = 0;
@@ -27,6 +28,7 @@ public:
   void setPosition(const float& _pX, const float& _pY, const float& _pZ);
   void setOrientation(const float& _pX, const float& _pY, const float& _pZ);
   void setObjectDims(const float& _pX, const float& _pY, const float& _pZ);
+  void setObjectDims(const glm::vec3& _pDims);
   
   std::string getName() const;
   

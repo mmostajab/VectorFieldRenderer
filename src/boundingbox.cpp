@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-BoundingBox::BoundingBox(const std::string& _pBBName, const glm::vec3& _pCorner1, const glm::vec3& _pCorner2): Vis3DObject(_pBBName), m_Segs(1, 1, 1)
+BoundingBox::BoundingBox(const std::string& _pUnitName, const std::string& _pBBName, const glm::vec3& _pCorner1, const glm::vec3& _pCorner2): Vis3DObject(_pUnitName, _pBBName), m_Segs(1, 1, 1)
 {
   //m_MinCorner = glm::vec3(glm::min(_pCorner1.x, _pCorner2.x), glm::min(_pCorner1.y, _pCorner2.y), glm::min(_pCorner1.z, _pCorner2.z));
   //m_MaxCorner = glm::vec3(glm::max(_pCorner1.x, _pCorner2.x), glm::max(_pCorner1.y, _pCorner2.y), glm::max(_pCorner1.z, _pCorner2.z));
@@ -14,8 +14,8 @@ BoundingBox::BoundingBox(const std::string& _pBBName, const glm::vec3& _pCorner1
  m_ShaderPrg = new ShaderProgram("../src/glsl/boundingbox.vert", "../src/glsl/boundingbox.frag");
 }
 
-BoundingBox::BoundingBox(const std::string& _pBBName, const float& _pLength, const float& _pWidth, const float& _pHeight, const int& _pLSegs, const int& _pWSegs, const int& _pHSegs):
-  Vis3DObject(_pBBName), m_MinCorner(-_pLength / 2.0f, -_pWidth / 2.0f, -_pHeight / 2.0f), m_Segs(_pLSegs, _pWSegs, _pHSegs),
+BoundingBox::BoundingBox(const std::string& _pUnitName, const std::string& _pBBName, const float& _pLength, const float& _pWidth, const float& _pHeight, const int& _pLSegs, const int& _pWSegs, const int& _pHSegs):
+  Vis3DObject(_pUnitName, _pBBName), m_MinCorner(-_pLength / 2.0f, -_pWidth / 2.0f, -_pHeight / 2.0f), m_Segs(_pLSegs, _pWSegs, _pHSegs),
   b_DetailedMode(false)
 {
   m_ShaderPrg = new ShaderProgram("../src/glsl/boundingbox.vert", "../src/glsl/boundingbox.frag");

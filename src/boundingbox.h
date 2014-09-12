@@ -26,8 +26,8 @@ private:
   bool b_DetailedMode;
   
 public:
-  BoundingBox(const std::string& _pBBName, const glm::vec3& _pCorner1 = glm::vec3(-FLT_MAX, -FLT_MAX, -FLT_MAX), const glm::vec3& _pCorner2 = glm::vec3(FLT_MAX, FLT_MAX, FLT_MAX));
-  BoundingBox(const std::string& _pBBName, const float& _pLength, const float& _pWidth, const float& _pHeight, const int& _pLSegs = 1, const int& _pWSegs = 1, const int& _pHSegs = 1);
+  BoundingBox(const std::string& _pUnitName, const std::string& _pBBName, const glm::vec3& _pCorner1 = glm::vec3(-FLT_MAX, -FLT_MAX, -FLT_MAX), const glm::vec3& _pCorner2 = glm::vec3(FLT_MAX, FLT_MAX, FLT_MAX));
+  BoundingBox(const std::string& _pUnitName, const std::string& _pBBName, const float& _pLength, const float& _pWidth, const float& _pHeight, const int& _pLSegs = 1, const int& _pWSegs = 1, const int& _pHSegs = 1);
   
   void init();
   void render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat);

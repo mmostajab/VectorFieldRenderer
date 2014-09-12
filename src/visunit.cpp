@@ -1,6 +1,6 @@
 #include "visunit.h"
 
-VisUnit::VisUnit(const std::string& _pObjName): m_Name(_pObjName)
+VisUnit::VisUnit(const std::string& _pObjName): m_Name(_pObjName), m_SetupModelMat(1.0f), m_ParentModelMat(1.0f)
 { 
 }
 

@@ -22,7 +22,7 @@ private:
   ShaderProgram* m_ShaderPrg;
   
 public:
-  Box(const std::string& _pBoxName, const float& _pLength, const float& _pWidth, const float& _pHeight, const glm::vec3& _pColor = glm::vec3(0, 1, 0));
+  Box(const std::string& _pUnitName, const std::string& _pBoxName, const float& _pLength, const float& _pWidth, const float& _pHeight, const glm::vec3& _pColor = glm::vec3(0, 1, 0));
   
   void init();
   void render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat);

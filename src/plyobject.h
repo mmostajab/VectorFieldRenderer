@@ -42,7 +42,7 @@ protected:
   BoundingBox m_BBox;
 
 public:
-  PlyObject(const std::string& _pObjName, const std::string& _pFileName, const long int& _pUserDataLength = -1, void* _pUserDataPtr = 0);
+  PlyObject(const std::string& _pUnitName, const std::string& _pObjName, const std::string& _pFileName, const long int& _pUserDataLength = -1, void* _pUserDataPtr = 0);
 
   void init();
   void render(const glm::mat4& _pViewMat, const glm::mat4& _pProjMat);

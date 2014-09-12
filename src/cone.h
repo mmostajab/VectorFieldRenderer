@@ -11,7 +11,7 @@ private:
   
   
 public:
-  Cone(const std::string& _pConeName);
+  Cone(const std::string& _pUnitName, const std::string& _pConeName);
   
   void init();
   void render();

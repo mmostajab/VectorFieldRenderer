@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-PlyObject::PlyObject(const std::string& _pObjName, const std::string&  _pFilename, const long int& _pUserDataLength, void* _pUserDataPtr): 
-  Vis3DObject(_pObjName), m_UserDataLength(_pUserDataLength), m_UserDataPtr(_pUserDataPtr),
-  m_nVertices(0), m_nFaces(0), m_nIndices(0), m_BBox(_pObjName + "_BBOX")
+PlyObject::PlyObject(const std::string& _pUnitName, const std::string& _pObjName, const std::string&  _pFilename, const long int& _pUserDataLength, void* _pUserDataPtr): 
+  Vis3DObject(_pUnitName, _pObjName), m_UserDataLength(_pUserDataLength), m_UserDataPtr(_pUserDataPtr),
+  m_nVertices(0), m_nFaces(0), m_nIndices(0), m_BBox(_pUnitName, _pObjName + "_BBOX")
 {
   m_Filename = _pFilename;
   m_ShaderPrg = new ShaderProgram("../src/glsl/plyobject.vert", "../src/glsl/plyobject.frag");

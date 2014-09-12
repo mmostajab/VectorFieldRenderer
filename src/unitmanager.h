@@ -12,14 +12,14 @@
 #include "visunit.h"
 
 // The main parts of the engine which uses the scene manager
-class Application;
+class VisApplication;
 
 // Singleton Destructor
 class UnitManagerDestructor;
 
 class UnitManager
 {
-  friend class Application;
+  friend class VisApplication;
   friend class UnitManagerDestructor;
 private:
   std::vector<VisUnit*> m_UnitPtrs;
@@ -35,9 +35,13 @@ public:
   
   static UnitManager* getSingletonPtr();
   
-  void createMeasurmentVolume(const std::string& _pBBName, const float& _pLength, const float& _pWidth, const float& _pHeight);
+  void createGround(const std::string& _pGroundName, const glm::vec3& _pPoint, const float& _pLen, const float& _pWidth);
+  void createGate(const std::string& _pGateName, const float& _pLen, const float& _pWidth, const float& _pHeight, const float& _pX, const float& _pY, const float& _pZ);
+  void createAntenna(const std::string& _pAntennaName, const float& _pLen, const float& _pWidth, const float& _pHeight);
+  void createDipole(const std::string& _pDipoleName, const float& _pLen, const float& _pWidth, const float& _pHeight);
+  void createMeasurmentVolume(const std::string& _pMVName, const float& _pLen, const float& _pWidth, const float& _pHeight, const int& _pLSegs, const int& _pWSegs, const int& _pHSegs);
   
-  Vis3DObject* getUnitPtrByName(const std::string& _pObjName);
+  VisUnit* getUnitPtrByName(const std::string& _pObjName);
 };
 
 class UnitManagerDestructor

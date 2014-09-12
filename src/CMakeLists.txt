@@ -15,9 +15,7 @@ add_executable (VectorFieldRenderer
   main.cpp
   application.cpp
   renderer.cpp
-  modelviewercam.cpp
   shaderprogram.cpp
-  vis3dobject.cpp
   camera.cpp
   
   rply.c
@@ -33,7 +31,12 @@ add_executable (VectorFieldRenderer
   scenemanager.cpp
   scenenode.cpp
   
+  visunit.cpp
   measurmentvolume.cpp
+  dipole.cpp
+  antenna.cpp
+  staticunit.cpp
+  ground.cpp
   unitmanager.cpp
   )
 
