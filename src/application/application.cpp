@@ -2,8 +2,7 @@
 
 #include <iostream>
 
-#include "unitmanager.h"
-//#include "scenemanager.h"
+#include "../application/unitmanager.h"
 
 VisApplication::VisApplication(const int& _pWidth, const int& _pHeight): m_Renderer(_pWidth, _pHeight), 
   b_MoveForward(false), b_MoveBackward(false), b_MoveLeft(false), b_MoveRight(false), b_MoveUp(false), b_MoveDown(false),
@@ -12,13 +11,13 @@ VisApplication::VisApplication(const int& _pWidth, const int& _pHeight): m_Rende
   UnitManager::getSingletonPtr()->createGround("Ground", glm::vec3(0, -1.5, 0), 100, 100);
   UnitManager::getSingletonPtr()->createMeasurmentVolume("MeasurmentVol", 2, 1, 1, 5, 5, 5);
   UnitManager::getSingletonPtr()->getUnitPtrByName("MeasurmentVol")->setPosition(0, -1, -1);
-  UnitManager::getSingletonPtr()->createDipole("Dipole", 0.05, 0.6, 0.4);
-  UnitManager::getSingletonPtr()->createAntenna("Antenna", 0.2, 0.4, 0.4);
-  glm::mat4 antennaSetupMat = glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-  UnitManager::getSingletonPtr()->getUnitPtrByName("Antenna")->setSetupModelMat(antennaSetupMat);
+  //UnitManager::getSingletonPtr()->createDipole("Dipole", 0.05, 0.6, 0.4);
+  //UnitManager::getSingletonPtr()->createAntenna("Antenna", 0.2, 0.4, 0.4);
+  //glm::mat4 antennaSetupMat = glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+  //UnitManager::getSingletonPtr()->getUnitPtrByName("Antenna")->setSetupModelMat(antennaSetupMat);
   
-  UnitManager::getSingletonPtr()->getUnitPtrByName("Antenna")->setPosition(0, 0, 0);
-  UnitManager::getSingletonPtr()->getUnitPtrByName("Dipole")->setPosition(0, 2, 0);
+  //UnitManager::getSingletonPtr()->getUnitPtrByName("Antenna")->setPosition(0, 0, 0);
+  //UnitManager::getSingletonPtr()->getUnitPtrByName("Dipole")->setPosition(0, 2, 0);
   
   
   

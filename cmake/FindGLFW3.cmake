@@ -1,65 +1,46 @@
-# Locate the glfw library
+# Locate the glfw3 library
+#
 # This module defines the following variables:
-# GLFW_LIBRARY, the name of the library;
-# GLFW_INCLUDE_DIR, where to find glfw include files.
-# GLFW_FOUND, true if both the GLFW_LIBRARY and GLFW_INCLUDE_DIR have been found.
 #
-# To help locate the library and include file, you could define an environment variable called
-# GLFW_ROOT which points to the root of the glfw library installation. This is pretty useful
-# on a Windows platform.
+# GLFW3_LIBRARY      the name of the library;
+# GLFW3_INCLUDE_DIR  where to find glfw include files.
+# GLFW3_FOUND        true if both the GLFW3_LIBRARY and GLFW3_INCLUDE_DIR have been found.
 #
+# To help locate the library and include file, you can define a 
+# variable called GLFW3_ROOT which points to the root of the glfw library 
+# installation.
 #
-# Usage example to compile an "executable" target to the glfw library:
-#
-# FIND_PACKAGE (glfw REQUIRED)
-# INCLUDE_DIRECTORIES (${GLFW_INCLUDE_DIR})
-# ADD_EXECUTABLE (executable ${EXECUTABLE_SRCS})
-# TARGET_LINK_LIBRARIES (executable ${GLFW_LIBRARY})
-#
-# TODO:
-# Allow the user to select to link to a shared library or to a static library.
 
-#Search for the include file...
-FIND_PATH(GLFW_INCLUDE_DIRS GLFW/glfw3.h DOC "Path to GLFW include directory."
-  HINTS
-  $ENV{GLFW_ROOT}
-  PATH_SUFFIX include #For finding the include file under the root of the glfw expanded archive, typically on Windows.
-  PATHS
-  /usr/include/
-  /usr/local/include/
-  # By default headers are under GLFW subfolder
-  /usr/include/GLFW
-  /usr/local/include/GLFW
-  ${GLFW_ROOT_DIR}/include/ # added by ptr
-)
+# default search dirs
+set( _glfw3_HEADER_SEARCH_DIRS 
+  "/usr/include"
+  "/usr/local/include"
+  "C:/Program Files (x86)/glfw/include" )
+set( _glfw3_LIB_SEARCH_DIRS
+  "/usr/lib"
+  "/usr/local/lib"
+  "C:/Program Files (x86)/glfw/lib-msvc110" )
 
-SET(GLFW_LIB_NAMES libglfw3.a glfw3 glfw GLFW3.lib)
+# Check environment for root search directory
+set( _glfw3_ENV_ROOT $ENV{GLFW3_ROOT} )
+if( NOT GLFW3_ROOT AND _glfw3_ENV_ROOT )
+  set(GLFW3_ROOT ${_glfw3_ENV_ROOT} )
+endif()
 
-FIND_LIBRARY(GLFW_LIBRARIES DOC "Absolute path to GLFW library."
-  NAMES ${GLFW_LIB_NAMES}
-  HINTS
-  $ENV{GLFW_ROOT}
-  PATH_SUFFIXES lib/win32 #For finding the library file under the root of the glfw expanded archive, typically on Windows.
-  PATHS
-  /usr/local/lib
-  /usr/lib
-  ${GLFW_ROOT_DIR}/lib-msvc100/release # added by ptr
-)
-IF( APPLE )
-    find_library(IOKIT NAMES IOKit)
-    #find_library(OpenGL NAMES OpenGL)
-    find_library(COREVIDEO NAMES CoreVideo)
-    find_library(COCOA NAMES Cocoa)
-    SET(GLFW_LIBRARIES ${GLFW_LIBRARIES} ${IOKIT} ${COREVIDEO} ${COCOA})
-endif( APPLE )
+# Put user specified location at beginning of search
+if( GLFW3_ROOT )
+  list( INSERT _glfw3_HEADER_SEARCH_DIRS 0 "${GLFW3_ROOT}/include" )
+  list( INSERT _glfw3_LIB_SEARCH_DIRS 0 "${GLFW3_ROOT}/lib" )
+endif()
 
-IF(GLFW_LIBRARIES AND GLFW_INCLUDE_DIRS)
-  SET(GLFW_FOUND TRUE)
-  message(STATUS "Found GLFW3: ${GLFW_LIBRARIES}")
-ELSE()
-  message(STATUS "GLFW3 NOT found!")
-ENDIF(GLFW_LIBRARIES AND GLFW_INCLUDE_DIRS)
+# Search for the header 
+FIND_PATH(GLFW3_INCLUDE_DIR "GLFW/glfw3.h"
+  PATHS ${_glfw3_HEADER_SEARCH_DIRS} )
 
-#if(GLFW_FOUND)
-#  MARK_AS_ADVANCED(GLFW_INCLUDE_DIRS GLFW_LIBRARIES)
-#endif(GLFW_FOUND)
+# Search for the library
+FIND_LIBRARY(GLFW3_LIBRARY NAMES glfw3 glfw
+  PATHS ${_glfw3_LIB_SEARCH_DIRS} )
+
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(GLFW3 DEFAULT_MSG
+                                  GLFW3_LIBRARY GLFW3_INCLUDE_DIR)

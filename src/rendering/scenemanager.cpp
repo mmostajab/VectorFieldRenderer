@@ -1,6 +1,6 @@
 #include "scenemanager.h"
-#include "unitmanager.h"
-#include "staticunit.h"
+#include "../application/unitmanager.h"
+//#include "staticunit.h"
 
 #include "boundingbox.h"
 #include "box.h"

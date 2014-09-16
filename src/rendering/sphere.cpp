@@ -7,7 +7,7 @@ Sphere3D::Sphere3D(const float& _pRadius, const int& _pSlices, const int& _pStac
 {
   //m_ShaderHeader = "#version 130\n#define SIMPLE_TEXTURING\n";
   m_ShaderHeader = "#version 130\n#define SPHERICAL_MAPPING\n";
-  m_ShaderPrg = new ShaderProgram("../src/sphere.vert", "../src/sphere.frag");
+  m_ShaderPrg = new ShaderProgram("../../srcsphere.vert", "../../srcsphere.frag");
 //   m_TexturePtr = new glcTexture2D(m_TextureFilename.c_str());
 
   b_Initialized = false;
@@ -18,7 +18,7 @@ Sphere3D::Sphere3D(const float& _pRadius, const int& _pSlices, const int& _pStac
 	m_Radius(_pRadius), m_Slices(_pSlices), m_Stacks(_pStacks), m_RotDeg(0.0f)
 {
   m_ShaderHeader = "#version 130\n#define CUBE_MAPPING\n";
-  m_ShaderPrg = new ShaderProgram("../src/sphere.vert", "../src/sphere.frag");
+  m_ShaderPrg = new ShaderProgram("../../srcsphere.vert", "../../srcsphere.frag");
 
 //   m_CubeTexturePtr = new glcTextureCube();
 

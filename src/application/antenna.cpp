@@ -1,6 +1,6 @@
 #include "antenna.h"
 
-#include "scenemanager.h"
+#include "../rendering/scenemanager.h"
 
 Antenna::Antenna(const std::string& _pAntennaName, const float& _pLen, const float& _pWidth, const float& _pHeight):
   VisUnit(_pAntennaName), m_AntennaObjName(_pAntennaName), m_Dims(_pLen, _pWidth, _pHeight)

@@ -2,7 +2,9 @@
 
 //#define GLFW_INCLUDE_GLU
 
-#include "application.h"
+#define GLFW_DLLL
+
+#include "application/application.h"
 #include <GLFW/glfw3.h>
 
 char g_WndTitle[] = "Visualization Tool";

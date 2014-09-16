@@ -9,20 +9,29 @@ MESSAGE(STATUS "Configuring RFID_MobiVis Source")
 
 # glob sources from core directories
 FILE(GLOB VectorFieldRendererSources RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    *.cpp
+	rendering/*.c
+    rendering/*.cpp
+	application/*.cpp
+	glsl/*.frag
+	glsl/*.vert
+	main.cpp
 )
 
 FILE(GLOB VectorFieldRendererHeaders RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    *.h
+    rendering/*.h
+	application/*.h
 )
 
-include_directories(${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIR})
+include_directories(${GLFW_INCLUDE_DIRS} ${GLEW_INCLUDE_PATH} ${GLM_INCLUDE_DIR})
 
 
 ADD_DEFINITIONS(${VectorFieldRendererGlobalDefinitions})
 
 INCLUDE_DIRECTORIES(${VectorFieldRendererIncludeDirs})
-LINK_DIRECTORIES(${GLFW_LIBRARIES} ${GLEW_LIBRARY})
+LINK_DIRECTORIES(${GLFW_LIBRARY} ${GLEW_LIBRARY})
+
+MESSAGE("GLEW Library = ${GLEW_LIBRARY}")
+MESSAGE("GLFW Library = ${GLFW3_LIBRARY}")
 
 add_executable (VectorFieldRenderer
 	${VectorFieldRendererSources}
@@ -30,7 +39,7 @@ add_executable (VectorFieldRenderer
   )
 
 
-TARGET_LINK_LIBRARIES(VectorFieldRenderer ${GLFW_LIBRARY} ${GLEW_LIBRARY})
+TARGET_LINK_LIBRARIES(VectorFieldRenderer ${OPENGL_LIBRARY} ${GLFW3_LIBRARY}/glfw3.lib ${GLEW_LIBRARY}/glew32.lib)
 
 DEFINE_SOURCE_GROUPS_FROM_SUBDIR(VectorFieldRendererSources ${VectorFieldRendererHome} "")
 DEFINE_SOURCE_GROUPS_FROM_SUBDIR(VectorFieldRendererHeaders ${VectorFieldRendererHome} "")

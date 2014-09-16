@@ -1,6 +1,6 @@
 #include "measurmentvolume.h"
 
-#include "scenemanager.h"
+#include "../rendering/scenemanager.h"
 
 #include <iostream>
 #include <stdio.h>

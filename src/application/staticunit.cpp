@@ -1,6 +1,6 @@
 #include "staticunit.h"
 
-#include "scenemanager.h"
+#include "../rendering/scenemanager.h"
 
 StaticUnit::StaticUnit(const std::string& _pStaticUnitName, const std::string& _pUnitFilename, const float& _pLen, const float& _pWidth, const float& _pHeight):
   VisUnit(_pStaticUnitName), m_StaticUnitObjName(_pStaticUnitName), m_UnitFilename(_pUnitFilename), m_Dims(_pLen, _pWidth, _pHeight)
