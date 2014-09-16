@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-#include "unitmanager.h"
+#include "../application/unitmanager.h"
 
 Box::Box(const std::string& _pUnitName, const std::string& _pBoxName, const float& _pLength, const float& _pWidth, const float& _pHeight, const glm::vec3& _pColor):
   Vis3DObject(_pUnitName, _pBoxName), m_Length(_pLength), m_Width(_pWidth), m_Height(_pHeight), m_Color(_pColor)
 {
-  m_ShaderPrg = new ShaderProgram("../src/glsl/simple.vert", "../src/glsl/simple.frag");
+  m_ShaderPrg = new ShaderProgram("../../src/glsl/simple.vert", "../../src/glsl/simple.frag");
 }
   
 void Box::init()

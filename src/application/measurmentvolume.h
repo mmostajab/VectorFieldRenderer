@@ -3,8 +3,8 @@
 
 #include "visunit.h"
 
-#include "boundingbox.h"
-#include "box.h"
+#include "../rendering/boundingbox.h"
+#include "../rendering/box.h"
 
 #include <vector>
 #include <string>

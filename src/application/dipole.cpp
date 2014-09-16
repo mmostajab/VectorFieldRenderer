@@ -1,6 +1,6 @@
 #include "dipole.h"
 
-#include "scenemanager.h"
+#include "../rendering/scenemanager.h"
 
 Dipole::Dipole(const std::string& _pDipoleName, const float& _pLen, const float& _pWidth, const float& _pHeight):
   VisUnit(_pDipoleName), m_DipoleObjName(_pDipoleName), m_Dims(_pLen, _pWidth, _pHeight)

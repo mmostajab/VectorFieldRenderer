@@ -5,7 +5,7 @@
 Plane::Plane(const std::string& _pUnitName, const std::string& _pObjName, const glm::vec3& _pPoint, const glm::vec3& _pXDir, const glm::vec3& _pYDir, const float& _pLen, const float& _pWidth): 
   Vis3DObject(_pUnitName, _pObjName), m_Point(_pPoint), m_XDir(_pXDir), m_YDir(_pYDir), m_Len(_pLen), m_Width(_pWidth)
 {
-  m_ShaderPrg = new ShaderProgram("../src/glsl/simple.vert", "../src/glsl/simple.frag");
+  m_ShaderPrg = new ShaderProgram("../../src/glsl/simple.vert", "../../src/glsl/simple.frag");
 }
   
 void Plane::init()

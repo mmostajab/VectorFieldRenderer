@@ -1,7 +1,7 @@
 #include "ground.h"
 
 #include <iostream>
-#include "scenemanager.h"
+#include "../rendering/scenemanager.h"
 
 Ground::Ground(const std::string& _pGroundName, const glm::vec3& _pPoint, const glm::vec3& _pXDir, const glm::vec3& _pYDir, const float& _pLen, const float& _pWidth):
   VisUnit(_pGroundName), m_GroundObjName(_pGroundName), m_Point(_pPoint), m_XDir(_pXDir), m_YDir(_pYDir), m_Length(_pLen), m_Width(_pWidth)
