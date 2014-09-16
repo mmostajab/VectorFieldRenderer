@@ -11,19 +11,19 @@ VisApplication::VisApplication(const int& _pWidth, const int& _pHeight): m_Rende
   UnitManager::getSingletonPtr()->createGround("Ground", glm::vec3(0, -1.5, 0), 100, 100);
   UnitManager::getSingletonPtr()->createMeasurmentVolume("MeasurmentVol", 2, 1, 1, 5, 5, 5);
   UnitManager::getSingletonPtr()->getUnitPtrByName("MeasurmentVol")->setPosition(0, -1, -1);
-  //UnitManager::getSingletonPtr()->createDipole("Dipole", 0.05, 0.6, 0.4);
-  //UnitManager::getSingletonPtr()->createAntenna("Antenna", 0.2, 0.4, 0.4);
-  //glm::mat4 antennaSetupMat = glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-  //UnitManager::getSingletonPtr()->getUnitPtrByName("Antenna")->setSetupModelMat(antennaSetupMat);
+  UnitManager::getSingletonPtr()->createDipole("Dipole", 0.05, 0.6, 0.4);
+  UnitManager::getSingletonPtr()->createAntenna("Antenna", 0.2, 0.4, 0.4);
+  glm::mat4 antennaSetupMat = glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+  UnitManager::getSingletonPtr()->getUnitPtrByName("Antenna")->setSetupModelMat(antennaSetupMat);
   
-  //UnitManager::getSingletonPtr()->getUnitPtrByName("Antenna")->setPosition(0, 0, 0);
-  //UnitManager::getSingletonPtr()->getUnitPtrByName("Dipole")->setPosition(0, 2, 0);
+  UnitManager::getSingletonPtr()->getUnitPtrByName("Antenna")->setPosition(0, 0, 0);
+  UnitManager::getSingletonPtr()->getUnitPtrByName("Dipole")->setPosition(0, 2, 0);
   
   
   
-  //UnitManager::getSingletonPtr()->createGate("Gate", 3, 0.2, 2, 0.0f, 1.5f, 0.0f);
-  //glm::mat4 gateSetupMat = glm::translate(glm::mat4(1.0f), glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(1, 0, 0));
-  //UnitManager::getSingletonPtr()->getUnitPtrByName("Gate")->setSetupModelMat(gateSetupMat);
+  UnitManager::getSingletonPtr()->createGate("Gate", 3, 0.2, 2, 0.0f, 1.5f, 0.0f);
+  glm::mat4 gateSetupMat = glm::translate(glm::mat4(1.0f), glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1.0f), -glm::pi<float>() / 2.0f, glm::vec3(1, 0, 0));
+  UnitManager::getSingletonPtr()->getUnitPtrByName("Gate")->setSetupModelMat(gateSetupMat);
 }
   
 void VisApplication::init()

@@ -9,7 +9,7 @@ Antenna::Antenna(const std::string& _pAntennaName, const float& _pLen, const flo
 
 void Antenna::init()
 {
-  SceneManager::getSingletonPtr()->createPlyObject(m_AntennaObjName, m_AntennaObjName, "../data/antenna.ply");
+  SceneManager::getSingletonPtr()->createPlyObject(m_AntennaObjName, m_AntennaObjName, "../../data/antenna.ply");
   SceneManager::getSingletonPtr()->getObjectPtrByName(m_AntennaObjName)->setObjectDims(m_Dims);	// antenna
 }
 

@@ -9,7 +9,7 @@ Dipole::Dipole(const std::string& _pDipoleName, const float& _pLen, const float&
 
 void Dipole::init()
 {
-  SceneManager::getSingletonPtr()->createPlyObject(m_DipoleObjName, m_DipoleObjName, "../data/dipole.ply");
+  SceneManager::getSingletonPtr()->createPlyObject(m_DipoleObjName, m_DipoleObjName, "../../data/dipole.ply");
   SceneManager::getSingletonPtr()->getObjectPtrByName(m_DipoleObjName)->setObjectDims(m_Dims);	// dipole
 }
 
