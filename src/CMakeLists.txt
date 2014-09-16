@@ -38,8 +38,11 @@ add_executable (VectorFieldRenderer
 	${VectorFieldRendererHeaders}
   )
 
-
-TARGET_LINK_LIBRARIES(VectorFieldRenderer ${OPENGL_LIBRARY} ${GLFW3_LIBRARY}/glfw3.lib ${GLEW_LIBRARY}/glew32.lib)
+IF(WIN32)
+	TARGET_LINK_LIBRARIES(VectorFieldRenderer ${OPENGL_LIBRARY} ${GLFW3_LIBRARY}/glfw3.lib ${GLEW_LIBRARY}/glew32.lib)
+ELSE(WIN32)
+	TARGET_LINK_LIBRARIES(VectorFieldRenderer ${OPENGL_LIBRARY} ${GLFW3_LIBRARY} ${GLEW_LIBRARY})
+ENDIF(WIN32)
 
 DEFINE_SOURCE_GROUPS_FROM_SUBDIR(VectorFieldRendererSources ${VectorFieldRendererHome} "")
 DEFINE_SOURCE_GROUPS_FROM_SUBDIR(VectorFieldRendererHeaders ${VectorFieldRendererHome} "")
